@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travel Buddy - Platform Liburan & AI Travel Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <!-- Marked.js for rendering Markdown output -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-paper-plane logo-icon"></i>
+          <span>travelbuddy</span>
+        </a>
+      </div>
+      <nav class="nav-menu">
+        <a href="#search-widget" class="nav-link active" data-tab-target="flight"><i class="fa-solid fa-plane"></i> Tiket Pesawat</a>
+        <a href="#search-widget" class="nav-link" data-tab-target="hotel"><i class="fa-solid fa-hotel"></i> Hotel</a>
+        <a href="#search-widget" class="nav-link" data-tab-target="xperience"><i class="fa-solid fa-ticket"></i> Xperience</a>
+        <a href="#ai-assistant" class="nav-link nav-ai-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Assistant</a>
+        <a href="#promo-section" class="nav-link" data-nav-target="promo"><i class="fa-solid fa-tags"></i> Promo</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn-secondary"><i class="fa-regular fa-user"></i> Masuk</button>
+        <button class="btn-primary">Daftar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fa-solid fa-sparkles"></i> AI-Powered Smart Travel Partner
+      </div>
+      <h1>Jelajahi Destinasi Impian Bersama AI Assistant</h1>
+      <p>Dapatkan rekomendasi itinerary, tiket pesawat, hotel terbaik, dan kuliner khas langsung dari AI Travel Buddy Anda.</p>
+    </div>
+
+    <!-- Quick Travel Tabs Bar -->
+    <div class="search-widget-container" id="search-widget">
+      <div class="widget-tabs">
+        <button class="tab-btn active" data-tab="flight"><i class="fa-solid fa-plane"></i> Tiket Pesawat</button>
+        <button class="tab-btn" data-tab="hotel"><i class="fa-solid fa-building"></i> Hotel</button>
+        <button class="tab-btn" data-tab="train"><i class="fa-solid fa-train"></i> Kereta Api</button>
+        <button class="tab-btn" data-tab="xperience"><i class="fa-solid fa-ticket"></i> Xperience</button>
+        <button class="tab-btn tab-ai" data-tab="ai"><i class="fa-solid fa-robot"></i> AI Itinerary Planner</button>
+      </div>
+
+      <!-- Tab Content 1: Tiket Pesawat -->
+      <div class="tab-pane active" id="pane-flight">
+        <div class="search-fields">
+          <div class="field-group">
+            <label><i class="fa-solid fa-plane-departure"></i> Dari</label>
+            <input type="text" id="flight-from" value="Jakarta (JKTA)" placeholder="Kota keberangkatan..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-plane-arrival"></i> Ke</label>
+            <input type="text" id="flight-to" placeholder="Bali, Jogja, Tokyo..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-calendar-days"></i> Tanggal Pergi</label>
+            <input type="date" id="flight-date" value="2026-08-20" />
+          </div>
+          <button class="btn-search btn-tab-submit" data-type="flight">
+            <i class="fa-solid fa-sparkles"></i> Cari Tiket & Tanya AI
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Hotel -->
+      <div class="tab-pane" id="pane-hotel">
+        <div class="search-fields">
+          <div class="field-group">
+            <label><i class="fa-solid fa-location-dot"></i> Kota / Destinasi / Hotel</label>
+            <input type="text" id="hotel-dest" placeholder="Bandung, Bali, Jogja, atau Nama Hotel..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-calendar-days"></i> Tanggal Check-in</label>
+            <input type="date" id="hotel-checkin" value="2026-08-20" />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-bed"></i> Tamu & Kamar</label>
+            <input type="text" id="hotel-guests" value="2 Tamu, 1 Kamar" placeholder="Jumlah tamu & kamar..." />
+          </div>
+          <button class="btn-search btn-tab-submit" data-type="hotel">
+            <i class="fa-solid fa-sparkles"></i> Cari Hotel & Tanya AI
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Kereta Api -->
+      <div class="tab-pane" id="pane-train">
+        <div class="search-fields">
+          <div class="field-group">
+            <label><i class="fa-solid fa-train"></i> Stasiun Asal</label>
+            <input type="text" id="train-from" value="Gambir (GMR)" placeholder="Stasiun asal..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-location-dot"></i> Stasiun Tujuan</label>
+            <input type="text" id="train-to" placeholder="Tugu Yogyakarta (YK), Bandung..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-calendar-days"></i> Tanggal Keberangkatan</label>
+            <input type="date" id="train-date" value="2026-08-20" />
+          </div>
+          <button class="btn-search btn-tab-submit" data-type="train">
+            <i class="fa-solid fa-sparkles"></i> Cari Kereta & Tanya AI
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content 4: Xperience -->
+      <div class="tab-pane" id="pane-xperience">
+        <div class="search-fields">
+          <div class="field-group">
+            <label><i class="fa-solid fa-compass"></i> Lokasi Aktivitas</label>
+            <input type="text" id="xperience-loc" placeholder="Bali, Jakarta, Jogja, Bandung..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-icons"></i> Kategori Xperience</label>
+            <select id="xperience-cat" class="select-field">
+              <option value="Taman Rekreasi & Theme Park">Taman Rekreasi & Theme Park</option>
+              <option value="Tur & Wisata Alam" selected>Tur & Wisata Alam</option>
+              <option value="Spa & Kecantikan">Spa & Kecantikan</option>
+              <option value="Konser & Event">Konser & Event</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-calendar-days"></i> Tanggal Aktivitas</label>
+            <input type="date" id="xperience-date" value="2026-08-20" />
+          </div>
+          <button class="btn-search btn-tab-submit" data-type="xperience">
+            <i class="fa-solid fa-sparkles"></i> Cari Xperience & Tanya AI
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content 5: AI Itinerary Planner -->
+      <div class="tab-pane" id="pane-ai">
+        <div class="search-fields">
+          <div class="field-group">
+            <label><i class="fa-solid fa-map-location-dot"></i> Destinasi Liburan</label>
+            <input type="text" id="ai-dest" placeholder="Labuan Bajo, Lombok, Malang..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-clock"></i> Durasi Liburan</label>
+            <input type="text" id="ai-duration" value="3 Hari 2 Malam" placeholder="Durasi liburan..." />
+          </div>
+          <div class="field-group">
+            <label><i class="fa-solid fa-wallet"></i> Tipe Budget</label>
+            <select id="ai-budget" class="select-field">
+              <option value="Backpacker / Hemat">Hemat / Backpacker</option>
+              <option value="Sedang / Standar" selected>Sedang / Standar</option>
+              <option value="Mewah / Luxury">Mewah / Luxury</option>
+            </select>
+          </div>
+          <button class="btn-search btn-tab-submit" data-type="ai">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Buat Itinerary AI
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main AI Assistant Section -->
+  <main class="main-content" id="ai-assistant">
+    <div class="ai-section-container">
+      <div class="ai-header">
+        <div class="ai-title-wrap">
+          <div class="ai-avatar">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <h2>AI Travel Assistant</h2>
+            <p class="ai-subtitle"><span class="status-dot"></span> Online & Siap Membantu Liburan Anda</p>
+          </div>
+        </div>
+        <button class="btn-clear-chat" id="btn-clear" title="Mulai Percakapan Baru">
+          <i class="fa-solid fa-rotate-right"></i> Reset Chat
+        </button>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="suggestion-chips">
+        <span class="chip-label"><i class="fa-solid fa-lightbulb"></i> Ide Pertanyaan:</span>
+        <button class="chip" data-prompt="Buatkan itinerary 3 hari 2 malam di Bali untuk liburan santai keluarga dengan estimasi budget.">
+          🌴 Itinerary Bali 3D2N
+        </button>
+        <button class="chip" data-prompt="Rekomendasikan hotel bintang 4 terbaik di Bandung dekat pusat kuliner.">
+          🏨 Hotel Bandung Murah & Strategis
+        </button>
+        <button class="chip" data-prompt="Sebutkan 5 tempat kuliner legendaris di Yogyakarta yang wajib dikunjungi.">
+          🍜 Kuliner Khas Yogyakarta
+        </button>
+        <button class="chip" data-prompt="Berapa perkiraan total biaya liburan hemat 5 hari ke Labuan Bajo?">
+          💰 Budget Liburan Labuan Bajo
+        </button>
+      </div>
+
+      <!-- Chat Box -->
+      <div id="chat-box" class="chat-box">
+        <div class="message bot welcome-message">
+          <div class="bot-welcome-header">
+            <i class="fa-solid fa-hand-wave"></i> Halo! Saya <strong>Travel Buddy AI Assistant</strong>.
+          </div>
+          Saya siap membantu Anda merencanakan liburan impian, dari mencari rekomendasi wisata, hotel pilihan, tiket pesawat, tiket kereta, Xperience hiburan, hingga promo diskon khusus. Apa rencana liburan Anda selanjutnya?
+        </div>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form id="chat-form" class="chat-input-form">
+        <div class="input-wrapper">
+          <input type="text" id="user-input" placeholder="Tanyakan rekomendasi wisata, hotel, xperience, atau promo..." autocomplete="off" required />
+          <button type="submit" class="btn-send">
+            <span>Kirim</span> <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Promo Deals Section -->
+    <section class="promo-section" id="promo-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-fire-flame-curved" style="color: #ff5e00;"></i> Promo & Diskon Spesial Liburan</h2>
+        <p>Gunakan kode promo berikut dan konsultasikan cara klaimnya dengan AI Assistant!</p>
+      </div>
+
+      <div class="promo-grid">
+        <div class="promo-card">
+          <div class="promo-tag">Diskon 25%</div>
+          <h3>Tiket Pesawat Domestik</h3>
+          <p>Diskon hingga Rp 500.000 untuk semua rute penerbangan domestik.</p>
+          <div class="promo-code">Kode: <strong>HEMATAIPESAWAT</strong></div>
+          <button class="btn-promo-ask" data-prompt="Bagaimana cara mencari dan klaim promo tiket pesawat murah kode HEMATAIPESAWAT?">
+            <i class="fa-solid fa-sparkles"></i> Konsultasi Promo AI
+          </button>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-tag">Cashback Rp 200rb</div>
+          <h3>Hotel & Resort Bintang 4-5</h3>
+          <p>Potongan langsung untuk penginapan hotel di Bali, Jogja, & Bandung.</p>
+          <div class="promo-code">Kode: <strong>STAYCAI</strong></div>
+          <button class="btn-promo-ask" data-prompt="Rekomendasikan hotel bintang 4 di Bali atau Jogja yang bisa menggunakan promo STAYCAI.">
+            <i class="fa-solid fa-sparkles"></i> Konsultasi Promo AI
+          </button>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-tag">Diskon 30%</div>
+          <h3>Xperience & Taman Rekreasi</h3>
+          <p>Promo masuk Dufan, Waterbom Bali, & tur wisata lokal pilihan.</p>
+          <div class="promo-code">Kode: <strong>XPERIENCEFUN</strong></div>
+          <button class="btn-promo-ask" data-prompt="Sebutkan tempat wisata Xperience populer yang cocok memakai diskon XPERIENCEFUN.">
+            <i class="fa-solid fa-sparkles"></i> Konsultasi Promo AI
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Travel Destinations -->
+    <section class="destinations-section">
+      <div class="section-header">
+        <h2>Destinasi Populer Favorit Traveler</h2>
+        <p>Jelajahi keindahan tempat wisata terpilih dan tanyakan AI untuk konsultasi lengkap.</p>
+      </div>
+
+      <div class="destinations-grid">
+        <!-- Destination 1 -->
+        <div class="dest-card">
+          <div class="dest-img-wrap">
+            <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop" alt="Bali" />
+            <span class="badge-trending"><i class="fa-solid fa-fire"></i> Trending</span>
+          </div>
+          <div class="dest-body">
+            <h3>Bali, Indonesia</h3>
+            <p>Pantai eksotis, pura megah, dan budaya spiritual yang menakjubkan.</p>
+            <div class="dest-footer">
+              <span class="dest-price">Mulai Rp 1.200.000</span>
+              <button class="btn-card-ask" data-prompt="Berikan rekomendasi tempat wisata tersembunyi (hidden gems) di Bali beserta kuliner khasnya.">
+                <i class="fa-solid fa-sparkles"></i> Tanya AI
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destination 2 -->
+        <div class="dest-card">
+          <div class="dest-img-wrap">
+            <img src="https://images.unsplash.com/photo-1584810359583-96fc3448beaa?w=600&auto=format&fit=crop" alt="Yogyakarta" />
+            <span class="badge-tag">Budaya & Kuliner</span>
+          </div>
+          <div class="dest-body">
+            <h3>Yogyakarta</h3>
+            <p>Kota budaya berhati nyaman dengan candi bersejarah dan gudeg lezat.</p>
+            <div class="dest-footer">
+              <span class="dest-price">Mulai Rp 450.000</span>
+              <button class="btn-card-ask" data-prompt="Buatkan rute wisata 2 hari di Jogja mengunjungi Candi Prambanan, Malioboro, dan tempat makan gudeg terbaik.">
+                <i class="fa-solid fa-sparkles"></i> Tanya AI
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destination 3 -->
+        <div class="dest-card">
+          <div class="dest-img-wrap">
+            <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=600&auto=format&fit=crop" alt="Labuan Bajo" />
+            <span class="badge-tag">Wisata Bahari</span>
+          </div>
+          <div class="dest-body">
+            <h3>Labuan Bajo</h3>
+            <p>Surga Komodo, Pulau Padar, dan pesona laut koral terbaik dunia.</p>
+            <div class="dest-footer">
+              <span class="dest-price">Mulai Rp 2.500.000</span>
+              <button class="btn-card-ask" data-prompt="Berikan tips dan panduan sailing tour pulau Komodo di Labuan Bajo untuk pemula.">
+                <i class="fa-solid fa-sparkles"></i> Tanya AI
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destination 4 -->
+        <div class="dest-card">
+          <div class="dest-img-wrap">
+            <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop" alt="Tokyo" />
+            <span class="badge-tag">Internasional</span>
+          </div>
+          <div class="dest-body">
+            <h3>Tokyo, Jepang</h3>
+            <p>Perpaduan futuristik, bunga sakura, dan pengalaman belanja tiada tanding.</p>
+            <div class="dest-footer">
+              <span class="dest-price">Mulai Rp 6.800.000</span>
+              <button class="btn-card-ask" data-prompt="Berapa perkiraan total biaya liburan 5 hari ke Tokyo Jepang dan tempat wisata wajibnya?">
+                <i class="fa-solid fa-sparkles"></i> Tanya AI
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose AI Assistant -->
+    <section class="features-section">
+      <h2>Mengapa Merencanakan Liburan Bersama AI Assistant?</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+          <h3>Respon Instan & Akurat</h3>
+          <p>Dapatkan jawaban dan saran itinerary terpersonalisasi hanya dalam hitungan detik.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
+          <h3>Memahami Konteks Percakapan</h3>
+          <p>AI mengingat seluruh riwayat diskusi Anda sehingga konsultasi berjalan alami tanpa mengulang dari awal.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+          <h3>Estimasi Budget Transparan</h3>
+          <p>Bantu Anda menghitung perkiraan tiket, akomodasi, dan biaya harian sesuai kantong.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="logo">
+          <i class="fa-solid fa-paper-plane logo-icon"></i>
+          <span>travelbuddy</span>
+        </div>
+        <p>Partner liburan pintar terpercaya Anda. Pesan tiket, hotel, dan dapatkan inspirasi perjalanan berbasis AI kapan saja.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produk</h4>
+        <a href="#search-widget" data-tab-target="flight">Tiket Pesawat</a>
+        <a href="#search-widget" data-tab-target="hotel">Hotel & Penginapan</a>
+        <a href="#search-widget" data-tab-target="train">Tiket Kereta Api</a>
+        <a href="#search-widget" data-tab-target="xperience">Xperience & Aktivitas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Fitur AI</h4>
+        <a href="#ai-assistant">AI Itinerary Planner</a>
+        <a href="#ai-assistant">Konsultasi Budget</a>
+        <a href="#ai-assistant">Rekomendasi Kuliner</a>
+      </div>
+      <div class="footer-col">
+        <h4>Dukungan</h4>
+        <a href="#">Pusat Bantuan</a>
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="#">Kebijakan Privasi</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Travel Buddy Inc. inspired by Traveloka. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

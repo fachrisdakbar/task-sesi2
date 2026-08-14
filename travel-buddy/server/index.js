@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import multer from 'multer';
 import { GoogleGenAI } from '@google/genai';
 
@@ -14,6 +15,13 @@ const ai = new GoogleGenAI({
 });
 
 const model = 'gemini-3.5-flash-lite';
+
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.use(express.json());
 app.get("/", (req, res) => {
@@ -62,6 +70,27 @@ app.post('/generate-from-file', upload.single('file'), async (req, res) => {
   }
 })
 
+app.post('/api/chat', async (req, res) => {
+  const { conversation } = req.body;
+  try {
+    if (!Array.isArray(conversation)) {
+      return res.status(400).json({ error: "Conversation must be an array" });
+    }
+    const result = await ai.models.generateContent({
+      model: model,
+      contents: conversation,
+      config: {
+        temperature: 0.8,
+        systemInstruction: "Anda adalah Travel Buddy, AI Assistant perjalanan cerdas dari platform liburan mirip Traveloka. Anda membantu pengguna merencanakan itinerary liburan, menemukan destinasi wisata populer, rekomendasi hotel, kuliner lokal, tips penerbangan, serta perkiraan anggaran. Berikan jawaban yang ramah, sangat membantu, ringkas namun jelas, dan gunakan format Markdown yang rapi dengan poin-poin serta cetak tebal. Selalu jawab dalam bahasa Indonesia."
+      },
+    });
+
+    return res.status(200).json({ result: result.text });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Failed to generate text" });
+  }
+})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
